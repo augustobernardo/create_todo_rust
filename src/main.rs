@@ -5,36 +5,25 @@ use std::io::BufRead;
 use std::io::Write;
 use std::path::Path;
 
+fn create_args() -> Vec<Arg<'static>> {
+    let set_path_arg = Arg::new("setpath")
+        .short('s')
+        .long("set-path")
+        .aliases(&["stp", "setpath"])
+        .help("Set the path to the directory where the files are created");
+
+    let create_arg = Arg::new("create")
+        .short('c')
+        .long("create")
+        .aliases(&["crt", "create"])
+        .help("Create a new file");
+
+    vec![set_path_arg, create_arg]
+}
+
 fn main() {
-    // let set_path_arg = Arg::new("setpath")
-    //     .short('s')
-    //     .long("set-path")
-    //     .aliases(["stp", "setpath"])
-    //     .help("Set the path to the directory where the files are created");
-
-    // let create_arg = Arg::new("create")
-    //     .short('c')
-    //     .long("create")
-    //     .aliases(["crt", "create"])
-    //     .help("Create a new file");
-
     let match_result: ArgMatches = command!()
-        .arg(
-            Arg::new("setpath")
-                .short('s')
-                .long("set-path")
-                .aliases(&["stp", "setpath"])
-                .help("Set the path to the directory where the files are created")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::new("create")
-                .short('c')
-                .long("create")
-                .aliases(&["crt", "create"])
-                .help("Create a new file")
-                .takes_value(true),
-        )
+        .args(create_args())
         .get_matches();
 
     if match_result.is_present("setpath") {
